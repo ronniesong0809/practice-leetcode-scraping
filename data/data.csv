@@ -1316,7 +1316,7 @@ question_id,question_article_live,question_article__has_video_solution,question_
 1524,,,String Matching in an Array,False,42668,67013,False,1,False,0.36481780133400815,8.769152780698532
 1525,,,Queries on a Permutation With Key,False,30181,36816,False,2,False,0.1419562422184955,3.4122128131793854
 1526,,,HTML Entity Parser,False,16521,30716,False,2,False,0.10508346897368827,2.5258992044425908
-1527,,,Number of Ways to Paint N ¡Á 3 Grid,False,17057,28124,False,3,False,1.0844892945564046,26.067950297990468
+1527,,,Number of Ways to Paint N Ã— 3 Grid,False,17057,28124,False,3,False,1.0844892945564046,26.067950297990468
 1528,,,Kids With the Greatest Number of Candies,False,230315,261582,False,1,False,0.9627706986494339,23.14219130306931
 1529,,,Max Difference You Can Get From Changing an Integer,False,10465,24357,False,2,False,0.19671029424605424,4.728340057618265
 1530,,,Check If a String Can Break Another String,False,22974,33983,False,2,False,0,0.0
