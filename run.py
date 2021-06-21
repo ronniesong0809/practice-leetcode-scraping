@@ -1,7 +1,6 @@
+import sys
 import json
 import requests
-import time
-import random
 
 def getTags(slug):
     url = "https://leetcode.com/graphql"
@@ -34,9 +33,9 @@ def cleaningTags(tags):
     return tags
 
 def run():
-    with open("raw.json") as f:
+    with open("data/raw.json") as f:
         data = json.loads(f.read())
-        with open("data.json", "w") as f:
+        with open("data/data.json", "w") as f:
             for x in data:
                 response = getTags(x["stat"]["question__title_slug"])
                 print(x["stat"]["question_id"], end=": ")
@@ -55,20 +54,28 @@ def run():
 def test():
     response = getTags("two-sum")
 
-    with open("testing/topicTags.json", "w") as f:
+    with open("data/testing/topicTags.json", "w") as f:
         json.dump(response[0], f)
 
-    with open("testing/similarQuestions.json", "w") as f:
+    with open("data/testing/similarQuestions.json", "w") as f:
         json.dump(cleaningTags(json.loads(response[1])), f)
 
-    with open("testing/companyTagStats.json", "w") as f:
-        json.dump(json.loads(response[2]), f)
+    with open("data/testing/companyTagStats.json", "w") as f:
+        json.dump(response[2], f)
 
-    with open("testing/companyTags.json", "w") as f:
-        json.dump(response[3], f)
+    with open("data/testing/companyTags.json", "w") as f:
+        json.dump(json.loads(response[3]), f)
 
-    with open("testing/envInfo.json", "w") as f:
+    with open("data/testing/envInfo.json", "w") as f:
         json.dump(json.loads(response[4]), f)
+    print("Done! → data/testing/")
 
-run()
-# test()
+def main(args):
+    if args[0] == 1:
+        run()
+    else:
+        test()
+
+if __name__ == "__main__":
+    assert len(sys.argv) == 2
+    main(sys.argv[1:])
