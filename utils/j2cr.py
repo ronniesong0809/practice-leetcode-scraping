@@ -2,9 +2,9 @@ import json
 import csv
 
 data = []
-with open('../data/raw.json') as f:
+with open('data/raw.json') as f:
     data = json.loads(f.read())
-    f = csv.writer(open("../data/raw.csv", "w", newline=''))
+    f = csv.writer(open("data/raw.csv", "w", newline=''))
 
 f.writerow(["question_id", "question_article_live", "question_article_slug",
             "question_article__has_video_solution", "question_title", "question_title_slug", "question_hide",
