@@ -1,0 +1,14 @@
+[
+  { "name": "Facebook", "slug": "facebook" },
+  { "name": "Microsoft", "slug": "microsoft" },
+  { "name": "Amazon", "slug": "amazon" },
+  { "name": "Bloomberg", "slug": "bloomberg" },
+  { "name": "Uber", "slug": "uber" },
+  { "name": "LinkedIn", "slug": "linkedin" },
+  { "name": "Apple", "slug": "apple" },
+  { "name": "Airbnb", "slug": "airbnb" },
+  { "name": "Yelp", "slug": "yelp" },
+  { "name": "Yahoo", "slug": "yahoo" },
+  { "name": "Adobe", "slug": "adobe" },
+  { "name": "Dropbox", "slug": "dropbox" }
+]
