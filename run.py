@@ -12,7 +12,7 @@ def getJsonFile():
     r = requests.get(url=url, headers=headers)
     data = r.json()
     with open('data/apiProblemsAll.json', 'w') as f:
-        json.dump(data, f)
+        json.dump(data['stat_status_pairs'], f)
 
 def getTags(slug):
     url = "https://leetcode.com/graphql"
@@ -44,18 +44,28 @@ def cleaningTags(tags):
     # print(tags)
     return tags
 
+def getDifficulty(level):
+    if level == 1:
+        return "easy"
+    elif level == 2:
+        return "easy"
+    elif level == 3:
+        return "hard"
+
 def run():
     with open("data/apiProblemsAll.json") as f:
         data = json.loads(f.read())
         with open("db/allQuestions.json", "w") as f:
-            for x in data['stat_status_pairs']:
+            for x in data:
                 response = getTags(x["stat"]["question__title_slug"])
                 print(x["stat"]["question_id"], end=": ")
-                print(response[0])
+                print(response[0], end=" => ")
                 x["tags"] = response[0]
                 x["similarQuestions"] = cleaningTags(json.loads(response[1]))
                 x["companyTags"] = response[2]
                 x["companyTagStats"] = json.loads(response[3])
+                x["difficulty"]["level"] = getDifficulty(x["difficulty"]["level"])
+                print(x["difficulty"]["level"])
                 del x["stat"]["question__article__slug"]
                 del x["stat"]["question__article__live"]
                 del x["stat"]["question__article__has_video_solution"]
