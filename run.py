@@ -48,7 +48,7 @@ def getDifficulty(level):
     if level == 1:
         return "easy"
     elif level == 2:
-        return "easy"
+        return "medium"
     elif level == 3:
         return "hard"
 
