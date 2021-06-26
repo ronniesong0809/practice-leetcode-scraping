@@ -2,6 +2,18 @@ import sys
 import json
 import requests
 
+def getJsonFile():
+    url = "https://leetcode.com/api/problems/all/"
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "cookie": "csrftoken=BWKWNm168hUWzwct5SagwtOLGfMP6J0oTaJbFQKaKgWAlBKzQK40rtAJlyoDtcF1; _ga=GA1.2.1056492324.1616526906; gr_user_id=e725893a-db5a-476b-ba83-08c98167e867; __stripe_mid=3178cb88-d3d0-4f83-9baf-422cdbf2bedbf127b1; 87b5a3c3f1a55520_gr_last_sent_cs1=ronsong; _gid=GA1.2.921365914.1623575440; LEETCODE_SESSION=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfYXV0aF91c2VyX2lkIjoiMjExNzMzNyIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImFsbGF1dGguYWNjb3VudC5hdXRoX2JhY2tlbmRzLkF1dGhlbnRpY2F0aW9uQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6ImMwNzJmYzdkYjZjZmYyZDM2ZTk2YTg2MGUzY2VjODUwNGEyNmE2MzMiLCJpZCI6MjExNzMzNywiZW1haWwiOiJyb25zb25nQHBkeC5lZHUiLCJ1c2VybmFtZSI6InJvbnNvbmciLCJ1c2VyX3NsdWciOiJyb25zb25nIiwiYXZhdGFyIjoiaHR0cHM6Ly9hc3NldHMubGVldGNvZGUuY29tL3VzZXJzL3JvbnNvbmcvYXZhdGFyXzE1OTkzMDg1NzYucG5nIiwicmVmcmVzaGVkX2F0IjoxNjI0NTgxNzU1LCJpcCI6IjczLjE4MC4xNy4yMTIiLCJpZGVudGl0eSI6IjcyNzY2YWIyYjFjODVhZjk4YWRiYmI5NjgzNjAwZmRmIiwic2Vzc2lvbl9pZCI6NzM3MTMyMCwiX3Nlc3Npb25fZXhwaXJ5IjoxMjA5NjAwfQ.i6BAkNg1mnMoN8tt013jpAEy0mKxzmuQdM72DvhEtkg; __atuvc=4|21,4|22,2|23,18|24,4|25; NEW_PROBLEMLIST_PAGE=1; 87b5a3c3f1a55520_gr_cs1=ronsong; c_a_u=cm9uc29uZw==:1lwyyP:IxW1GCRlnb1LfVKaAFaUJXLWjf4; __cf_bm=ed098b7ef7c0729e437a51611e4ee3b39753d383-1624683379-1800-AdiYY9bhMFkmZ5NqqPMOzXKQIZYrxlBmvmn+j4ie+g1r68dclM9IYUOW7ER1UUuffu/Mptboc6NRyyuWLULJvLs="
+    }
+    r = requests.get(url=url, headers=headers)
+    data = r.json()
+    with open('data/apiProblemsAll.json', 'w') as f:
+        json.dump(data, f)
+
 def getTags(slug):
     url = "https://leetcode.com/graphql"
     headers = {
@@ -33,10 +45,10 @@ def cleaningTags(tags):
     return tags
 
 def run():
-    with open("data/raw.json") as f:
+    with open("data/apiProblemsAll.json") as f:
         data = json.loads(f.read())
-        with open("data/data.json", "w") as f:
-            for x in data:
+        with open("db/allQuestions.json", "w") as f:
+            for x in data['stat_status_pairs']:
                 response = getTags(x["stat"]["question__title_slug"])
                 print(x["stat"]["question_id"], end=": ")
                 print(response[0])
@@ -71,7 +83,8 @@ def test():
     print("Done! → data/testing/")
 
 def main(args):
-    if args[0] == 1:
+    getJsonFile()
+    if args[0] == "1":
         run()
     else:
         test()
