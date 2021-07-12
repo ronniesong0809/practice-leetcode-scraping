@@ -1,13 +1,13 @@
-import sys
 import json
 import requests
+import os
 
 def getJsonFile():
     url = "https://leetcode.com/api/problems/all/"
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "cookie": "_ga=GA1.2.37052354.1606567733; __stripe_mid=8f3b50cb-b0df-4231-869f-056091828c2d36b551; csrftoken=NPIQLYahmRJrGm5gob0f9ZvUhColNdKs6ZFI76pEMJysFGG51y8eu8mk4Xzx4BbF; gr_user_id=66e7429a-be1e-46c8-b2dc-258ca871d86a; 87b5a3c3f1a55520_gr_last_sent_cs1=ronsong; __atuvc=0|22,0|23,4|24,0|25,4|26; LEETCODE_SESSION=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfYXV0aF91c2VyX2lkIjoiMjExNzMzNyIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImFsbGF1dGguYWNjb3VudC5hdXRoX2JhY2tlbmRzLkF1dGhlbnRpY2F0aW9uQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6ImMwNzJmYzdkYjZjZmYyZDM2ZTk2YTg2MGUzY2VjODUwNGEyNmE2MzMiLCJpZCI6MjExNzMzNywiZW1haWwiOiJyb25zb25nQHBkeC5lZHUiLCJ1c2VybmFtZSI6InJvbnNvbmciLCJ1c2VyX3NsdWciOiJyb25zb25nIiwiYXZhdGFyIjoiaHR0cHM6Ly9hc3NldHMubGVldGNvZGUuY29tL3VzZXJzL3JvbnNvbmcvYXZhdGFyXzE1OTkzMDg1NzYucG5nIiwicmVmcmVzaGVkX2F0IjoxNjI1OTA3MTk0LCJpcCI6IjczLjE4MC4xNy4yMTIiLCJpZGVudGl0eSI6IjM2NTFmMDcyMzk1MzQ3NTM3Yzc0MDg5OTg5Yzg4YTY2Iiwic2Vzc2lvbl9pZCI6ODcwMDM4NCwiX3Nlc3Npb25fZXhwaXJ5IjoxMjA5NjAwLCJjb252ZXJzaW9uX3RhcmdldHMiOnsiUnh0YVZ4RUtBUVJIR1VWUVNoZ1hGUU1VVEJRR0FCd0VEUXRCRkZkYlFGOGFIVkpRRmhzWEFnPT0iOnsic2VuZF9zZXNzaW9uX2lkcyI6WzE0NzJdLCJlbWFpbCI6InJvbnNvbmdAcGR4LmVkdSJ9LCJSeHRhVnhFS0FRUkhEMUJjRGdNTFhRc1hXMDBBSEFaZFdrd0hGZz09Ijp7InNlbmRfc2Vzc2lvbl9pZHMiOlsxNDcyXSwiZW1haWwiOiJyb25zb25nQHBkeC5lZHUifX19.UoGOwtJxQmfdYiQpy4h5jCYKUL4JyOj-XVQRU6ryqds; 87b5a3c3f1a55520_gr_session_id=5d0e6fd1-c998-4c91-aaf8-4aa666b3cbac; 87b5a3c3f1a55520_gr_last_sent_sid_with_cs1=5d0e6fd1-c998-4c91-aaf8-4aa666b3cbac; 87b5a3c3f1a55520_gr_session_id_5d0e6fd1-c998-4c91-aaf8-4aa666b3cbac=true; 87b5a3c3f1a55520_gr_cs1=ronsong; _gid=GA1.2.600309613.1625907493; _gat=1"
+        "cookie": os.environ.get("LEETCODE_COOKIE")
     }
     r = requests.get(url=url, headers=headers)
     data = r.json()
@@ -19,12 +19,12 @@ def getTags(slug):
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "cookie": "_ga=GA1.2.37052354.1606567733; __stripe_mid=8f3b50cb-b0df-4231-869f-056091828c2d36b551; csrftoken=NPIQLYahmRJrGm5gob0f9ZvUhColNdKs6ZFI76pEMJysFGG51y8eu8mk4Xzx4BbF; gr_user_id=66e7429a-be1e-46c8-b2dc-258ca871d86a; 87b5a3c3f1a55520_gr_last_sent_cs1=ronsong; __atuvc=0|22,0|23,4|24,0|25,4|26; LEETCODE_SESSION=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfYXV0aF91c2VyX2lkIjoiMjExNzMzNyIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImFsbGF1dGguYWNjb3VudC5hdXRoX2JhY2tlbmRzLkF1dGhlbnRpY2F0aW9uQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6ImMwNzJmYzdkYjZjZmYyZDM2ZTk2YTg2MGUzY2VjODUwNGEyNmE2MzMiLCJpZCI6MjExNzMzNywiZW1haWwiOiJyb25zb25nQHBkeC5lZHUiLCJ1c2VybmFtZSI6InJvbnNvbmciLCJ1c2VyX3NsdWciOiJyb25zb25nIiwiYXZhdGFyIjoiaHR0cHM6Ly9hc3NldHMubGVldGNvZGUuY29tL3VzZXJzL3JvbnNvbmcvYXZhdGFyXzE1OTkzMDg1NzYucG5nIiwicmVmcmVzaGVkX2F0IjoxNjI1OTA3MTk0LCJpcCI6IjczLjE4MC4xNy4yMTIiLCJpZGVudGl0eSI6IjM2NTFmMDcyMzk1MzQ3NTM3Yzc0MDg5OTg5Yzg4YTY2Iiwic2Vzc2lvbl9pZCI6ODcwMDM4NCwiX3Nlc3Npb25fZXhwaXJ5IjoxMjA5NjAwLCJjb252ZXJzaW9uX3RhcmdldHMiOnsiUnh0YVZ4RUtBUVJIR1VWUVNoZ1hGUU1VVEJRR0FCd0VEUXRCRkZkYlFGOGFIVkpRRmhzWEFnPT0iOnsic2VuZF9zZXNzaW9uX2lkcyI6WzE0NzJdLCJlbWFpbCI6InJvbnNvbmdAcGR4LmVkdSJ9LCJSeHRhVnhFS0FRUkhEMUJjRGdNTFhRc1hXMDBBSEFaZFdrd0hGZz09Ijp7InNlbmRfc2Vzc2lvbl9pZHMiOlsxNDcyXSwiZW1haWwiOiJyb25zb25nQHBkeC5lZHUifX19.UoGOwtJxQmfdYiQpy4h5jCYKUL4JyOj-XVQRU6ryqds; 87b5a3c3f1a55520_gr_session_id=5d0e6fd1-c998-4c91-aaf8-4aa666b3cbac; 87b5a3c3f1a55520_gr_last_sent_sid_with_cs1=5d0e6fd1-c998-4c91-aaf8-4aa666b3cbac; 87b5a3c3f1a55520_gr_session_id_5d0e6fd1-c998-4c91-aaf8-4aa666b3cbac=true; _gid=GA1.2.600309613.1625907493; 87b5a3c3f1a55520_gr_cs1=ronsong"
+        "cookie": os.environ.get("LEETCODE_COOKIE")
     }
     body = {
         "operationName": "getQuestionDetail",
         "variables": {
-            "titleSlug": slug+""
+            "titleSlug": slug + ""
         },
         "query": "query getQuestionDetail($titleSlug: String!) {\n  isCurrentUserAuthenticated\n  question(titleSlug: $titleSlug) {\n    questionId\n    questionFrontendId\n    questionTitle\n    questionTitleSlug\n    content\n    translatedContent\n    difficulty\n    stats\n    allowDiscuss\n    contributors {\n      username\n      profileUrl\n      __typename\n    }\n    similarQuestions\n    mysqlSchemas\n    randomQuestionUrl\n    sessionId\n    categoryTitle\n    submitUrl\n    interpretUrl\n    codeDefinition\n    sampleTestCase\n    enableTestMode\n    metaData\n    enableRunCode\n    enableSubmit\n    judgerAvailable\n    infoVerified\n    envInfo\n    urlManager\n    article\n    questionDetailUrl\n    libraryUrl\n    adminUrl\n    companyTags {\n      name\n      slug\n    }\n    companyTagStats\n    topicTags {\n      name\n      slug\n    }\n    __typename\n  }\n  interviewed {\n    interviewedUrl\n    companies {\n      id\n      name\n      slug\n      __typename\n    }\n    timeOptions {\n      id\n      name\n      __typename\n    }\n    stageOptions {\n      id\n      name\n      __typename\n    }\n    __typename\n  }\n  subscribeUrl\n  isPremium\n  loginUrl\n}\n"
     }
@@ -65,6 +65,9 @@ def run():
                 x["companyTags"] = response[2]
                 x["companyTagStats"] = json.loads(response[3])
                 x["difficulty"]["level"] = getDifficulty(x["difficulty"]["level"])
+                print(len(x["similarQuestions"]), end="/")
+                print(len(x["companyTags"]), end="/")
+                print(len(x["companyTagStats"]), end=" => ")
                 print(x["difficulty"]["level"])
                 del x["stat"]["question__article__slug"]
                 del x["stat"]["question__article__live"]
@@ -92,12 +95,10 @@ def test():
         json.dump(json.loads(response[4]), f)
     print("Done! → data/testing/")
 
-def main(args):
+def main():
     getJsonFile()
-    if args[0] == "1":
-        test()
-    else:
-        run()
+    # test()
+    run()
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main()

@@ -1,6 +1,7 @@
 import json
 from pymongo import MongoClient
 from datetime import datetime
+import os
 
 def Insert(db, _collection, _file):
     collection = db[_collection]
@@ -21,8 +22,8 @@ def InsertOne(db, _collection, _data):
     collection.insert_one(_data)
 
 def main():
-    client = MongoClient("mongodb+srv://ronsong:0809@cluster0.abzec.mongodb.net/")
-    db = client["leetcode"]
+    client = MongoClient(os.environ.get("MONGODB_CLIENT"))
+    db = client[os.environ.get("MONGODB_DB")]
 
     Insert(db, "algorithms", 'db/allQuestions.json')
     Insert(db, "companies", 'db/allCompanies.json')
