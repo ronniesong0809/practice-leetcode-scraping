@@ -98,6 +98,7 @@ def test():
 def main():
     getJsonFile()
     # test()
+    print(os.environ.get("LEETCODE_COOKIE"))
     run()
 
 if __name__ == "__main__":
