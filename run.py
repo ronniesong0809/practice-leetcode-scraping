@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 def main():
   load_dotenv()
   
-  # GetQuestions.main()
+  GetQuestions.main()
   GetTags.main()
   InsertToMongodb.main()
 
