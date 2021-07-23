@@ -1,8 +1,12 @@
 import json
 import requests
 import os
+import time
+from utils.runtime import runtime 
 
-def getJsonFile():
+level = ["", "easy", "medium", "hard"]
+
+def getAllProblemsSaveAsJsonFile():
     url = "https://leetcode.com/api/problems/all/"
     headers = {
         "Content-Type": "application/json",
@@ -30,75 +34,58 @@ def getTags(slug):
     }
     r = requests.post(url=url, headers=headers, data=json.dumps(body))
     response = r.json()
-    result = []
-    result.append(response["data"]["question"]["topicTags"])
-    result.append(response["data"]["question"]["similarQuestions"])
-    result.append(response["data"]["question"]["companyTags"])
-    result.append(response["data"]["question"]["companyTagStats"])
-    result.append(response["data"]["question"]["envInfo"])
-    return result
+    return response["data"]["question"]["topicTags"], json.loads(response["data"]["question"]["similarQuestions"]), response["data"]["question"]["companyTags"], json.loads(response["data"]["question"]["companyTagStats"]), response["data"]["question"]["envInfo"]
 
-def cleaningTags(tags):
-    for x in tags:
-        del x["translatedTitle"]
-    # print(tags)
-    return tags
+def buildData(x):
+    start = time.time()
 
-def getDifficulty(level):
-    if level == 1:
-        return "easy"
-    elif level == 2:
-        return "medium"
-    elif level == 3:
-        return "hard"
+    x["tags"], x["similarQuestions"], x["companyTags"], x["companyTagStats"], temp = getTags(x["stat"]["question__title_slug"])
+    x["difficulty"]["level"] = level[x["difficulty"]["level"]]
+
+    del x["stat"]["question__article__slug"]
+    del x["stat"]["question__article__live"]
+    del x["stat"]["question__article__has_video_solution"]
+    del x["status"]
+    
+    print(f'{x["stat"]["question_id"]}: [{runtime(start):.2f} sec] => [tags/similar/companies/stats]: {len(x["tags"])}/{len(x["similarQuestions"])}/{len(x["companyTags"])}/[{len(x["companyTagStats"]["1"])}/{len(x["companyTagStats"]["2"])}/{len(x["companyTagStats"]["2"])}] => {x["difficulty"]["level"]}')
 
 def run():
     with open("data/apiProblemsAll.json") as f:
         data = json.loads(f.read())
         with open("db/allQuestions.json", "w") as f:
             for x in data:
-                response = getTags(x["stat"]["question__title_slug"])
-                print(x["stat"]["question_id"], end=": ")
-                print(response[0], end=" => ")
-                x["tags"] = response[0]
-                x["similarQuestions"] = cleaningTags(json.loads(response[1]))
-                x["companyTags"] = response[2]
-                x["companyTagStats"] = json.loads(response[3])
-                x["difficulty"]["level"] = getDifficulty(x["difficulty"]["level"])
-                print(len(x["similarQuestions"]), end="/")
-                print(len(x["companyTags"]), end="/")
-                print(len(x["companyTagStats"]), end=" => ")
-                print(x["difficulty"]["level"])
-                del x["stat"]["question__article__slug"]
-                del x["stat"]["question__article__live"]
-                del x["stat"]["question__article__has_video_solution"]
-                del x["status"]
+                buildData(x)
 
             json.dump(data, f)
 
 def test():
-    response = getTags("two-sum")
+    a, b, c, d, e = getTags("two-sum")
 
     with open("data/testing/topicTags.json", "w") as f:
-        json.dump(response[0], f)
+        json.dump(a, f)
 
     with open("data/testing/similarQuestions.json", "w") as f:
-        json.dump(cleaningTags(json.loads(response[1])), f)
+        json.dump(b, f)
 
     with open("data/testing/companyTagStats.json", "w") as f:
-        json.dump(response[2], f)
+        json.dump(c, f)
 
     with open("data/testing/companyTags.json", "w") as f:
-        json.dump(json.loads(response[3]), f)
+        json.dump(d, f)
 
     with open("data/testing/envInfo.json", "w") as f:
-        json.dump(json.loads(response[4]), f)
+        json.dump(json.loads(e), f)
     print("Done! → data/testing/")
 
 def main():
-    getJsonFile()
+    start = time.time()
+    getAllProblemsSaveAsJsonFile()
+    print(f'getAllProblemsSaveAsJsonFile: {runtime(start):.2f} sec')
+
+    start = time.time()
     # test()
     run()
+    print(f'GetQuestions.run(): {runtime(start):.2f} sec')
 
 if __name__ == "__main__":
     main()
