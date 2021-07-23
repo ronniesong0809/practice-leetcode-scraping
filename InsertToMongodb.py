@@ -2,6 +2,7 @@ import json
 from pymongo import MongoClient
 from datetime import datetime
 import os
+from utils.runtime import runtime
 
 def Insert(db, _collection, _file):
     collection = db[_collection]
@@ -21,7 +22,8 @@ def InsertOne(db, _collection, _data):
     collection.delete_many({})
     collection.insert_one(_data)
 
-def main():
+@runtime
+def run():
     client = MongoClient(os.environ.get("MONGODB_CLIENT"))
     db = client[os.environ.get("MONGODB_DB")]
 
@@ -29,6 +31,9 @@ def main():
     Insert(db, "companies", 'db/allCompanies.json')
     Insert(db, "topics", 'db/allTopics.json')
     InsertOne(db, "version", {"last_updated": datetime.utcnow()})
+
+def main():
+    run()
 
 if __name__ == "__main__":
     main()

@@ -1,7 +1,9 @@
 import json
 import requests
 import os
+from utils.runtime import runtime
 
+@runtime
 def getJsonFile():
     url = "https://leetcode.com/problems/api/tags/"
     headers = {
@@ -14,7 +16,7 @@ def getJsonFile():
     with open('data/problemsApiTags.json', 'w') as f:
         json.dump(data, f)
 
-    
+@runtime
 def saveToFile():
     with open('data/problemsApiTags.json') as f:
         data = json.loads(f.read())
@@ -36,9 +38,13 @@ def dump(data, output):
             x['count'] = len(list)
         json.dump(data, f)
 
-def main():
+@runtime
+def run():
     getJsonFile()
     saveToFile()
+
+def main():
+    run()
 
 if __name__ == "__main__":
     main()

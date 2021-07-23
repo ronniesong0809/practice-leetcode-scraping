@@ -2,10 +2,11 @@ import json
 import requests
 import os
 import time
-from utils.runtime import runtime 
+from utils.runtime import runtime, runtime_withoutFucName
 
 level = ["", "easy", "medium", "hard"]
 
+@runtime
 def getAllProblemsSaveAsJsonFile():
     url = "https://leetcode.com/api/problems/all/"
     headers = {
@@ -36,9 +37,8 @@ def getTags(slug):
     response = r.json()
     return response["data"]["question"]["topicTags"], json.loads(response["data"]["question"]["similarQuestions"]), response["data"]["question"]["companyTags"], json.loads(response["data"]["question"]["companyTagStats"]), response["data"]["question"]["envInfo"]
 
+@runtime_withoutFucName
 def buildData(x):
-    start = time.time()
-
     x["tags"], x["similarQuestions"], x["companyTags"], x["companyTagStats"], temp = getTags(x["stat"]["question__title_slug"])
     x["difficulty"]["level"] = level[x["difficulty"]["level"]]
 
@@ -47,9 +47,9 @@ def buildData(x):
     del x["stat"]["question__article__has_video_solution"]
     del x["status"]
     
-    print(f'{x["stat"]["question_id"]}: [{runtime(start):.2f} sec] => [tags/similar/companies/stats]: {len(x["tags"])}/{len(x["similarQuestions"])}/{len(x["companyTags"])}/[{len(x["companyTagStats"]["1"])}/{len(x["companyTagStats"]["2"])}/{len(x["companyTagStats"]["2"])}] => {x["difficulty"]["level"]}')
+    print(f'{x["stat"]["question_id"]} => [tags/similar/companies/stats]: {len(x["tags"])}/{len(x["similarQuestions"])}/{len(x["companyTags"])}/[{len(x["companyTagStats"]["1"])}/{len(x["companyTagStats"]["2"])}/{len(x["companyTagStats"]["2"])}] => {x["difficulty"]["level"]}', end="\t => ")
 
-def run():
+def preProcessing():
     with open("data/apiProblemsAll.json") as f:
         data = json.loads(f.read())
         with open("db/allQuestions.json", "w") as f:
@@ -77,15 +77,14 @@ def test():
         json.dump(json.loads(e), f)
     print("Done! → data/testing/")
 
-def main():
-    start = time.time()
+@runtime
+def run():
     getAllProblemsSaveAsJsonFile()
-    print(f'getAllProblemsSaveAsJsonFile: {runtime(start):.2f} sec')
-
-    start = time.time()
     # test()
+    preProcessing()
+
+def main():
     run()
-    print(f'GetQuestions.run(): {runtime(start):.2f} sec')
 
 if __name__ == "__main__":
     main()
