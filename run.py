@@ -8,7 +8,7 @@ from utils.runtime import runtime
 def main():
   load_dotenv()
 
-  GetQuestions.main()
+  GetQuestions.Spider().run()
   GetTagsCompanies.main()
   InsertToMongodb.main()
 
